@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html5>
 <html>
 <head>
   <title>WHERE TO BUY FLAT</title>
@@ -11,6 +11,7 @@
   <script src="jquery/dist/jquery.js"></script>
   <script src="semantic/dist/semantic.js"></script>
   <script src="noUiSlider/nouislider.min.js"></script>
+  <script src="maptest/raphael-min.js"></script>
 </head>
 <body>
   <!-- Navbar -->
@@ -37,9 +38,23 @@
           Area
         </h4>
         <div class="ui fluid icon input">
-          <input id="area-input" placeholder="Enter the name of the town, or a postal code" type="text" value="567987">
+          <input id="area-input" placeholder="Enter the name of the town, or a postal code" type="text" value="596195">
           <i class="search icon"></i>
         </div>
+      </div>
+    </div>
+
+    <div class="row centered">
+      <div class="eight wide column" style="margin-bottom:0%;">
+        <h4 class="ui horizontal divider header">
+          <i class="marker icon"></i>
+          Map
+        </h4>
+        <div id="map" style="transform:scale(0.6); margin-top:-20%; margin-left:-25%;"></div>
+        <div class="ui fluid input" style="margin-top:-18%">
+          <input id="location" value="Region">
+        </div>
+        <script src="maptest/map.js"></script>
       </div>
     </div>
     
@@ -133,7 +148,10 @@
     function formPayload() {
       var output = {features: 'school'};
       var area = $('#area-input').val();
-      console.log(area);
+      if($('#location').val() != "Region") {
+        console.log("Using region")
+        area = $('#location').val();
+      }
       output.address = area;
       output.minprice = minPrice.innerHTML;
       output.maxprice = maxPrice.innerHTML;
