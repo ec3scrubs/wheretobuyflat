@@ -1,20 +1,143 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Where to buy flats</title>
+  <title>WHERE TO BUY FLAT</title>
   
-  <!-- Imports -->
+  <!-- CSS Imports -->
   <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+  <link rel="stylesheet" type="text/css" href="noUiSlider/nouislider.min.css">
+
+  <!-- JS Imports -->
   <script src="jquery/dist/jquery.js"></script>
   <script src="semantic/dist/semantic.js"></script>
+  <script src="noUiSlider/nouislider.min.js"></script>
+
+
+
 </head>
 <body>
+  <div class="ui grid">
+    <div class="row">
+      <!-- <div class="eight wide column centered center aligned"><h1>Where To Buy Flats</h1></div>       -->
+    </div>
 
-<h1 class="ui header">First header</h1>
-<h2 class="ui header">Second header</h2>
-<h3 class="ui header">Third header</h3>
-<h4 class="ui header">Fourth header</h4>
-<h5 class="ui header">Fifth header</h5>
+    <div class="row centered">
+      <div class="eight wide column">
+        <h4 class="ui horizontal divider header">
+          <i class="marker icon"></i>
+          Area
+        </h4>
+        <p><h4>I am interested to live in these areas</h4></p>
+      </div>
 
+    </div>
+    
+    <div class="row centered">
+      <div class="eight wide column">
+        <h4 class="ui horizontal divider header">
+          <i class="building icon"></i>
+          Amenities
+        </h4>
+        <!-- <p><h4>I am interested in</h4> -->
+        <select name="skills" multiple="" class="ui fluid dropdown">
+          <option value="">Options</option>
+          <option value="angular">Angular</option>
+          <option value="css">CSS</option>
+          <option value="design">Graphic Design</option>
+          <option value="ember">Ember</option>
+          <option value="html">HTML</option>
+          <option value="ia">Information Architecture</option>
+          <option value="javascript">Javascript</option>
+          <option value="mech">Mechanical Engineering</option>
+          <option value="meteor">Meteor</option>
+          <option value="node">NodeJS</option>
+          <option value="plumbing">Plumbing</option>
+          <option value="python">Python</option>
+          <option value="rails">Rails</option>
+          <option value="react">React</option>
+          <option value="repair">Kitchen Repair</option>
+          <option value="ruby">Ruby</option>
+          <option value="ui">UI Design</option>
+          <option value="ux">User Experience</option>
+        </select>
+      </p>
+
+    </div>
+  </div>
+
+  <div class="row centered">
+    <div class="eight wide column center aligned">
+      <h4 class="ui horizontal divider header">
+        <i class="dollar icon"></i>
+        Pricing
+      </h4>
+
+      <div id="price-slider"></div>      
+
+      <!-- <p><h3>I am willing to pay <div class="header red ui" id="min-price" style="display:inline"></div> to <div class="header blue ui" id="max-price" style="display:inline"></div>.</h3>
+      </p>  -->
+
+      <h4 class="grey ui header">
+        <div class="header red ui" id="min-price" style="display:inline"></div> k to <div class="header blue ui" id="max-price" style="display:inline"></div> k
+      </h4>
+
+
+    </div>
+  </div>
+
+  <div class="row centered">
+    <div class="eight wide column center aligned">
+      <button class="ui inverted green button">
+        Submit
+      </button>
+    </div>
+
+  </div>
+
+</div>
+
+
+
+
+<script type="text/javascript">
+  $('.ui.dropdown')
+  .dropdown();
+
+  var html5Slider = document.getElementById('price-slider');
+
+  noUiSlider.create(html5Slider, {
+    start: [ 10, 30 ],
+    connect: true,
+    range: {
+      'min': 10,
+      'max': 90
+    }
+  });
+
+  var minPrice = document.getElementById('min-price');
+  var maxPrice = document.getElementById('max-price');
+
+  html5Slider.noUiSlider.on('update', function(values, handle) {
+    var value = values[handle];
+
+    if (handle) {
+      maxPrice.innerHTML = Math.round(value);
+    } else {
+      minPrice.innerHTML = Math.round(value);
+    }
+  });
+
+  minPrice.addEventListener('change', function(){
+    html5Slider.noUiSlider.set([this.value, null]);
+  });
+
+  maxPrice.addEventListener('change', function(){
+    html5Slider.noUiSlider.set([null, this.value]);
+  });
+
+
+
+
+</script>
 </body>
 </html>
