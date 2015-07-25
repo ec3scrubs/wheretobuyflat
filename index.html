@@ -184,6 +184,7 @@
       })
       .fail(function(err) {
         console.log( "error: "+ err);
+        resetInputs();
       })
       .always(function() {
         $('#submitButton').addClass('loading');
