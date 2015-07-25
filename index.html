@@ -37,7 +37,7 @@
           Area
         </h4>
         <div class="ui fluid icon input">
-          <input id="area-input" placeholder="Enter the name of the town, or a postal code" type="text">
+          <input id="area-input" placeholder="Enter the name of the town, or a postal code" type="text" value="567987">
           <i class="search icon"></i>
         </div>
       </div>
@@ -118,7 +118,8 @@
 <script type="text/javascript">
     // Init shenanigans
     $('.ui.dropdown')
-    .dropdown();
+      .dropdown()
+    ;
 
     $(function() {
       $('#results').hide();  
@@ -130,23 +131,36 @@
     }
 
     function formPayload() {
-      var output = {};
+      var output = {features: 'school'};
       var area = $('#area-input').val();
+      console.log(area);
+      output.address = area;
+      output.minprice = minPrice.innerHTML;
+      output.maxprice = maxPrice.innerHTML;
+      output.features = $('.ui.dropdown').dropdown('get value') || ['School'];
+      return output;
     }
 
     function submitQuery() {
-      var payload = {
-        "address": "730157",
-        "features": "school"
-      }
-      var jqxhr = $.post( "http://localhost:5000/api/query", payload, function() {
-        console.log( "success" );
+      $('#submitButton').addClass('loading');
+      var payload = formPayload()
+      // var jqxhr = $.post( "http://localhost:5000/api/query", payload, function() {
+      //   console.log( "success" );
+      // })
+      $.ajax({
+          url: 'http://localhost:5000/api/query',
+          type: 'POST',
+          data: JSON.stringify(payload),
+          contentType: 'application/json; charset=utf-8',
+          dataType: 'json',
+          async: true
       })
       .done(function(json) {
         $('#options').hide();
         $('#results').show();
         console.log(json);
-        var cow = json[0].address;
+        // JSON is the return object
+        var cow = json['0'].address;
         console.log(cow);
         $('#foobar').val(cow);
       })
@@ -178,11 +192,11 @@
     var html5Slider = document.getElementById('price-slider');
 
     noUiSlider.create(html5Slider, {
-      start: [ 10, 30 ],
+      start: [ 200, 400 ],
       connect: true,
       range: {
-        'min': 10,
-        'max': 90
+        'min': 90,
+        'max': 1000
       }
     });
 
