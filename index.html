@@ -127,16 +127,20 @@
         <div class="ui segment">
           <p>This is a segment for the data fetched</p>
         </div>
+          <input id="foobar" type="text" class="ui segment">
+        </div>
       </div>
-    </div>
 
-    <div class="row centered">
-      <div class="eight wide column center aligned">
-        <div class="ui buttons huge">
-          <button class="ui button" onclick="backButton()">Return</button>
+      <div class="row centered">
+        <div class="eight wide column center aligned">
+          <div class="ui buttons huge">
+            <button class="ui button" onclick="backButton()">Return</button>
+          </div>
         </div>
       </div>
     </div>
+
+    
   </div> <!-- end of results div -->
 
   <script type="text/javascript">
@@ -154,15 +158,20 @@
     }
 
     function submitQuery() {
-      var jqxhr = $.getJSON( "example.json", function() {
+      var jqxhr = $.getJSON( "test.json", function(json) {
         console.log( "success" );
+        console.log(json);
+        
       })
-      .done(function() {
+      .done(function(json) {
         $('#options').hide();
         $('#results').show();
+        var cow = json.status_url;
+        $('#foobar').val(cow);
       })
-      .fail(function() {
+      .fail(function(d, textStatus, error) {
         console.log( "error" );
+        console.error("getJSON failed, status: " + textStatus + ", error: "+error);
       })
       .always(function() {
         $('#submitButton').addClass('loading');
@@ -172,6 +181,7 @@
     function backButton() {
       $('#results').hide();
       $('#options').show();
+      $('#submitButton').removeClass('loading');
     }
 
     // Set up Town dropdown
