@@ -101,7 +101,7 @@
       <div class="eight wide column center aligned">
         <div class="ui buttons huge">
           <button class="ui button" onclick="resetInputs()">Reset</button>
-          <button id="submitButton" class="ui positive button" onclick="submitQuery()">Submit</button>
+          <button id="submitButton" class="ui positive button" onclick="testQuery()">Submit</button>
         </div>
       </div>
     </div>
@@ -127,23 +127,23 @@
         <div class="ui segment">
           <p>This is a segment for the data fetched</p>
         </div>
-          <input id="foobar" type="text" class="ui segment">
-        </div>
-      </div>
-
-      <div class="row centered">
-        <div class="eight wide column center aligned">
-          <div class="ui buttons huge">
-            <button class="ui button" onclick="backButton()">Return</button>
-          </div>
-        </div>
+        <input id="foobar" type="text" class="ui segment">
       </div>
     </div>
 
-    
-  </div> <!-- end of results div -->
+    <div class="row centered">
+      <div class="eight wide column center aligned">
+        <div class="ui buttons huge">
+          <button class="ui button" onclick="backButton()">Return</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <script type="text/javascript">
+
+</div> <!-- end of results div -->
+
+<script type="text/javascript">
     // Init shenanigans
     $('.ui.dropdown')
     .dropdown();
@@ -157,25 +157,28 @@
       location.reload();
     }
 
-    function submitQuery() {
-      var jqxhr = $.getJSON( "test.json", function(json) {
+    function testQuery() {
+      var payload = {
+        "address": "730157",
+        "features": "school"
+      }
+      var jqxhr = $.post( "http://localhost:5000/api/query", payload, function() {
         console.log( "success" );
-        console.log(json);
-        
       })
       .done(function(json) {
         $('#options').hide();
         $('#results').show();
-        var cow = json.status_url;
+        console.log(json);
+        var cow = json[0].address;
+        console.log(cow);
         $('#foobar').val(cow);
       })
-      .fail(function(d, textStatus, error) {
-        console.log( "error" );
-        console.error("getJSON failed, status: " + textStatus + ", error: "+error);
+      .fail(function(err) {
+        console.log( "error: "+ err);
       })
       .always(function() {
         $('#submitButton').addClass('loading');
-      })      
+      });
     }
 
     function backButton() {
