@@ -6,6 +6,7 @@
   <!-- CSS Imports -->
   <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.css">
   <link rel="stylesheet" type="text/css" href="noUiSlider/nouislider.css">
+  <link rel="stylesheet" type="text/css" href="handlebars-v3.0.3.js">
 
   <!-- JS Imports -->
   <script src="jquery/dist/jquery.js"></script>
@@ -82,7 +83,10 @@
   <!-- Results div -->
   <div class="ui grid" id="results">
 
+    <!-- This row is just for padding -->
     <div class="row" style="margin-top:20px"></div>
+
+    
 
     <div class="row centered">
       <div class="eight wide column">
@@ -90,14 +94,87 @@
           <i class="list layout icon"></i>
           Results
         </h4>
-        <div class="ui segment">
-          <p>This is a segment for the data fetched</p>
-        </div>
-        <div class="ui segment">
-          <p>This is a segment for the data fetched</p>
-        </div>
-        <div class="ui segment">
-          <p>This is a segment for the data fetched</p>
+        <div class="ui segment">          
+          <p class="ui red ribbon label">Top Pick</p>          
+          <h2>ADDRESS</h2>
+          <div class="ui divider"></div>
+
+          <div class="ui statistics tiny">            
+            <div class="statistic">
+              <div class="value">
+                0.79
+              </div>
+              <div class="label">
+                KM from Location
+              </div>
+            </div>
+            <div class="statistic">
+              <div class="value">
+                69
+              </div>
+              <div class="label">
+                Square Metres
+              </div>
+            </div>
+            <div class="statistic">
+              <div class="value">
+                900k
+              </div>
+              <div class="label">
+                SGD
+              </div>
+            </div>          
+          </div>
+
+          <div class="ui divider"><br></div>
+          <span class="ui tag label large">School</span>
+          <table class="ui striped table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Distance away</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Fuchun Primary</td>
+                <td>0.23</td>
+              </tr>
+              <tr>
+                <td>Siling Primary</td>
+                <td>0.47</td>
+              </tr>
+              <tr>
+                <td>St Nicholas Girls' School</td>
+                <td>20.4</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <span class="ui tag label large">School</span>
+          <table class="ui striped table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Distance away</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Fuchun Primary</td>
+                <td>0.23</td>
+              </tr>
+              <tr>
+                <td>Siling Primary</td>
+                <td>0.47</td>
+              </tr>
+              <tr>
+                <td>St Nicholas Girls' School</td>
+                <td>20.4</td>
+              </tr>
+            </tbody>
+          </table>        
+
         </div>
         <input id="foobar" type="text" class="ui segment">
       </div>
@@ -118,7 +195,7 @@
 <script type="text/javascript">
     // Init shenanigans
     $('.ui.dropdown')
-      .dropdown()
+    .dropdown()
     ;
 
     $(function() {
@@ -126,6 +203,15 @@
     })
 
     // Functions
+    var results = $('#results');
+
+    function renderResults(json) {
+      for (var i = 0; i < json.n_items; i++) {
+        document.write("")
+      }
+
+    }
+
     function resetInputs() {
       location.reload();
     }
@@ -143,23 +229,22 @@
 
     function submitQuery() {
       $('#submitButton').addClass('loading');
-      var payload = formPayload()
-      // var jqxhr = $.post( "http://localhost:5000/api/query", payload, function() {
-      //   console.log( "success" );
-      // })
+      var payload = formPayload();
       $.ajax({
-          url: 'http://localhost:5000/api/query',
-          type: 'POST',
-          data: JSON.stringify(payload),
-          contentType: 'application/json; charset=utf-8',
-          dataType: 'json',
-          async: true
+        url: 'http://localhost:5000/api/query',
+        type: 'POST',
+        data: JSON.stringify(payload),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        async: true
       })
       .done(function(json) {
         $('#options').hide();
         $('#results').show();
         console.log(json);
+
         // JSON is the return object
+        // The below function is just a proof of concept, remove later
         var cow = json['0'].address;
         console.log(cow);
         $('#foobar').val(cow);
@@ -171,6 +256,8 @@
         $('#submitButton').addClass('loading');
       });
     }
+
+
 
     function backButton() {
       $('#results').hide();
