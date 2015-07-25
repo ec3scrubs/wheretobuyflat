@@ -1,0 +1,8 @@
+# Ignore node modules
+/node_modules
+
+# Ignore semantic and jquery
+/jquery
+/semantic
+semantic.json
+
