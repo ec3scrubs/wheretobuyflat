@@ -13,10 +13,6 @@
   <script src="noUiSlider/nouislider.min.js"></script>
   <script src="handlebars-v3.0.3.js"></script>
 
-    
-
-
-
 </head>
 <body>
   <!-- Navbar -->
@@ -91,8 +87,6 @@
 
     <!-- This row is just for padding -->
     <div class="row" style="margin-top:20px"></div>
-
-
 
     <div class="row centered">
       <div class="eight wide column">
@@ -195,31 +189,51 @@
     </div>
   </div>
 
-
-</div> <!-- end of results div -->
-
-        <script id="entry-template" type="text/x-handlebars-template">
-  <div class="entry">
-    <h1>{{title}}</h1>
-    <div class="body">
-      {{body}}
+  <div class="row centered">
+    <div class="eight wide column">
+      <h4 class="ui horizontal divider header">
+        <i class="list layout icon"></i>
+        Results
+      </h4>
+      <div id="appendable" class="row centered"></div>
     </div>
-  </div>
-</script>
-<script type="text/javascript">
+
+
+
+    <script id="template2" type="text/x-handlebars-template">
+      <div>Chapter stuff:</div>
+      <ul>
+        {{#Chapters}}
+          <li>{{address}}</li>
+        {{/Chapters}}
+      </ul>
+    </script>
+
+
+  </div> <!-- end of results div -->
+  <script>
+    var source = document.getElementById('template2').innerHTML;
+    var template = Handlebars.compile(source);
+    var data = [{"address": "231 BT BATOK EAST AVE 5", "distance": 2.2170929462159825, "price": 340000, "school": [{"dist": 0.3716126271516735, "name": "Bukit View Primary School"}, {"dist": 0.43103333412574174, "name": "Bukit View Secondary School"}, {"dist": 0.43824109229087765, "name": "Keming Primary School"}, {"dist": 0.46818087387542423, "name": "Hillgrove Secondary School"}, {"dist": 0.5667441439131506, "name": "Lianhua Primary School"}], "score": 15.95446668358972, "size": 99, "value": 3434.343434343434}, {"address": "409 SAUJANA RD", "distance": 4.823406448834644, "price": 297000, "school": [{"dist": 0.3287492482575833, "name": "Greenridge Primary School"}, {"dist": 0.3594834586604394, "name": "Zhenghua Primary School"}, {"dist": 0.631831957758242, "name": "Greenridge Secondary School"}, {"dist": 0.6602222905207402, "name": "Beacon Primary School"}, {"dist": 0.6694136655431259, "name": "Zhenghua Secondary School"}], "score": 16.030953618645967, "size": 106, "value": 2801.8867924528304}, {"address": "208 PETIR RD", "distance": 3.839322245908119, "price": 320000, "school": [{"dist": 0.6371637474400008, "name": "Bukit Panjang Primary School"}, {"dist": 0.7388802080758482, "name": "Chestnut Drive Secondary School"}, {"dist": 0.912533133938577, "name": "Zhenghua Primary School"}, {"dist": 0.9405201951726768, "name": "Greenridge Secondary School"}, {"dist": 1.0796795015059062, "name": "Assumption Pathway School"}], "score": 16.147014553600428, "size": 104, "value": 3076.923076923077}, {"address": "253 BANGKIT RD", "distance": 4.4533667135200705, "price": 330000, "school": [{"dist": 0.34111370705009914, "name": "Greenridge Secondary School"}, {"dist": 0.5386180015266562, "name": "Beacon Primary School"}, {"dist": 0.6207349012680426, "name": "Zhenghua Primary School"}, {"dist": 0.9077699768308743, "name": "Bukit Panjang Primary School"}, {"dist": 1.0300899064822762, "name": "Greenridge Primary School"}], "score": 16.56345845663934, "size": 109, "value": 3027.5229357798166}, {"address": "104 TECK WHYE LANE", "distance": 4.65735163276676, "price": 320000, "school": [{"dist": 0.6365892383392548, "name": "South View Primary School"}, {"dist": 0.7244570426982239, "name": "Chua Chu Kang Secondary School"}, {"dist": 0.7545343409018312, "name": "Teck Whye Primary School"}, {"dist": 0.7708120116130924, "name": "Teck Whye Secondary School"}, {"dist": 0.8919715515514755, "name": "Pioneer Junior College"}], "score": 16.732823330879967, "size": 106, "value": 3018.867924528302}];
+
+    var result = template({Chapters: data});
+    $('#appendable').append(result);
+
+  </script>
+
+  <script type="text/javascript">
     // Init shenanigans
     $('.ui.dropdown')
     .dropdown()
     ;
 
+
+
     $(function() {
-      $('#results').hide(); 
-      var source   = $("#entry-template").html();
-      var template = Handlebars.compile(source);
-      var context = {title: "My New Post", body: "This is my first post!"};
-      var html    = template(context);
-      $('#entry-template').html(html);
+      $('#results').hide();
     })
+
+
 
     // Functions
     var results = $('#results');
@@ -330,9 +344,9 @@
   </script>
 
   <script type="text/javascript">
-  
-  
-</script>
+
+
+  </script>
 
 
 </body>
