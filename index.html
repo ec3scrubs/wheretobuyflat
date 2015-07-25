@@ -11,9 +11,6 @@
   <script src="jquery/dist/jquery.js"></script>
   <script src="semantic/dist/semantic.js"></script>
   <script src="noUiSlider/nouislider.min.js"></script>
-
-
-
 </head>
 <body>
   <!-- Navbar -->
@@ -33,41 +30,16 @@
       <!-- <div class="eight wide column centered center aligned"><h1>Where To Buy Flats</h1></div>       -->
     </div>
 
-    <!-- Steps -->
-<!--     <div class="row centered">
-      <div class="wide column center aligned">
-        <div class="ui ordered steps">
-          <div class="completed step">
-            <div class="content">
-            <div class="title">Area</div>
-              <div class="description">Choose your desired area</div>
-            </div>
-          </div>
-          <div class="completed step">
-            <div class="content">
-              <div class="title">Amenities</div>
-              <div class="description">Tell us what you want <br>to have in your neighbourhood</div>
-            </div>
-          </div>
-          <div class="active step">
-            <div class="content">
-              <div class="title">Confirm Order</div>
-              <div class="description">Verify order details</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
-
     <div class="row centered">
       <div class="eight wide column">
         <h4 class="ui horizontal divider header">
           <i class="marker icon"></i>
           Area
         </h4>
-        <select id="towns" class="ui dropdown fluid">
-          <option value="">Town</option>
-        </select>
+        <div class="ui fluid icon input">
+          <input id="area-input" placeholder="Enter the name of the town, or a postal code" type="text">
+          <i class="search icon"></i>
+        </div>
       </div>
     </div>
     
@@ -157,6 +129,11 @@
       location.reload();
     }
 
+    function formPayload() {
+      var output = {};
+      var area = $('#area-input').val();
+    }
+
     function submitQuery() {
       var payload = {
         "address": "730157",
@@ -187,16 +164,6 @@
       $('#submitButton').removeClass('loading');
     }
 
-    // Set up Town dropdown
-    var towns = document.getElementById('towns');
-    var townsList = ['Woodlands', 'Ang Mo Kio', 'Bukit Timah', 'Pasir Ris'];
-    for (var i = 0; i < townsList.length; i++) {
-      var option = document.createElement('option');
-      option.text = townsList[i];
-      option.value = townsList[i];
-      towns.appendChild(option);
-    }
-
     // Set up Amenities dropdown
     var amenities = document.getElementById('amenities');
     var amenitiesList = ['Child Care', 'Clinic', 'Community Club', 'Disabled-Friendly', 'Elder Care', 'Exercise Facilities', 'Family', 'Hawker Centre', 'Hospital', 'Kindergarten', 'Library', 'Nursing', 'Play', 'Relaxation', 'School'];
@@ -206,7 +173,6 @@
       option.value = amenitiesList[i];
       amenities.appendChild(option);
     }
-
 
     // Set up price slider
     var html5Slider = document.getElementById('price-slider');
