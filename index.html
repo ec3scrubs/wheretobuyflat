@@ -6,12 +6,17 @@
   <!-- CSS Imports -->
   <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.css">
   <link rel="stylesheet" type="text/css" href="noUiSlider/nouislider.css">
-  <link rel="stylesheet" type="text/css" href="handlebars-v3.0.3.js">
 
   <!-- JS Imports -->
   <script src="jquery/dist/jquery.js"></script>
   <script src="semantic/dist/semantic.js"></script>
   <script src="noUiSlider/nouislider.min.js"></script>
+  <script src="handlebars-v3.0.3.js"></script>
+
+    
+
+
+
 </head>
 <body>
   <!-- Navbar -->
@@ -24,6 +29,7 @@
       <a href="about.html" class="item">About</a>
     </div>
   </div>
+
 
   <!-- Options div -->
   <div class="ui grid" id="options">
@@ -86,7 +92,7 @@
     <!-- This row is just for padding -->
     <div class="row" style="margin-top:20px"></div>
 
-    
+
 
     <div class="row centered">
       <div class="eight wide column">
@@ -192,6 +198,14 @@
 
 </div> <!-- end of results div -->
 
+        <script id="entry-template" type="text/x-handlebars-template">
+  <div class="entry">
+    <h1>{{title}}</h1>
+    <div class="body">
+      {{body}}
+    </div>
+  </div>
+</script>
 <script type="text/javascript">
     // Init shenanigans
     $('.ui.dropdown')
@@ -199,7 +213,12 @@
     ;
 
     $(function() {
-      $('#results').hide();  
+      $('#results').hide(); 
+      var source   = $("#entry-template").html();
+      var template = Handlebars.compile(source);
+      var context = {title: "My New Post", body: "This is my first post!"};
+      var html    = template(context);
+      $('#entry-template').html(html);
     })
 
     // Functions
@@ -306,6 +325,15 @@
     maxPrice.addEventListener('change', function(){
       html5Slider.noUiSlider.set([null, this.value]);
     });
+
+
   </script>
+
+  <script type="text/javascript">
+  
+  
+</script>
+
+
 </body>
 </html>
