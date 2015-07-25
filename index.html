@@ -4,8 +4,8 @@
   <title>WHERE TO BUY FLAT</title>
   
   <!-- CSS Imports -->
-  <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
-  <link rel="stylesheet" type="text/css" href="noUiSlider/nouislider.min.css">
+  <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.css">
+  <link rel="stylesheet" type="text/css" href="noUiSlider/nouislider.css">
 
   <!-- JS Imports -->
   <script src="jquery/dist/jquery.js"></script>
@@ -27,9 +27,10 @@
           <i class="marker icon"></i>
           Area
         </h4>
-        <p><h4>I am interested to live in these areas</h4></p>
+        <select id="towns" class="ui dropdown fluid">
+          <option value="">Town</option>
+        </select>
       </div>
-
     </div>
     
     <div class="row centered">
@@ -38,106 +39,97 @@
           <i class="building icon"></i>
           Amenities
         </h4>
-        <!-- <p><h4>I am interested in</h4> -->
-        <select name="skills" multiple="" class="ui fluid dropdown">
-          <option value="">Options</option>
-          <option value="angular">Angular</option>
-          <option value="css">CSS</option>
-          <option value="design">Graphic Design</option>
-          <option value="ember">Ember</option>
-          <option value="html">HTML</option>
-          <option value="ia">Information Architecture</option>
-          <option value="javascript">Javascript</option>
-          <option value="mech">Mechanical Engineering</option>
-          <option value="meteor">Meteor</option>
-          <option value="node">NodeJS</option>
-          <option value="plumbing">Plumbing</option>
-          <option value="python">Python</option>
-          <option value="rails">Rails</option>
-          <option value="react">React</option>
-          <option value="repair">Kitchen Repair</option>
-          <option value="ruby">Ruby</option>
-          <option value="ui">UI Design</option>
-          <option value="ux">User Experience</option>
+        <select id="amenities" name="amenities" multiple="" class="ui fluid dropdown">
+          <option value="">Amenities</option>
         </select>
-      </p>
-
-    </div>
-  </div>
-
-  <div class="row centered">
-    <div class="eight wide column center aligned">
-      <h4 class="ui horizontal divider header">
-        <i class="dollar icon"></i>
-        Pricing
-      </h4>
-
-      <div id="price-slider"></div>      
-
-      <!-- <p><h3>I am willing to pay <div class="header red ui" id="min-price" style="display:inline"></div> to <div class="header blue ui" id="max-price" style="display:inline"></div>.</h3>
-      </p>  -->
-
-      <h4 class="grey ui header">
-        <div class="header red ui" id="min-price" style="display:inline"></div> k to <div class="header blue ui" id="max-price" style="display:inline"></div> k
-      </h4>
-
-
-    </div>
-  </div>
-
-  <div class="row centered">
-    <div class="eight wide column center aligned">
-      <button class="ui inverted green button">
-        Submit
-      </button>
+      </div>
     </div>
 
-  </div>
+    <div class="row centered">
+      <div class="eight wide column center aligned">
+        <h4 class="ui horizontal divider header">
+          <i class="dollar icon"></i>
+          Pricing
+        </h4>
 
-</div>
+        <div id="price-slider"></div>
+        <h4 class="grey ui header">
+          <div class="header red ui" id="min-price" style="display:inline"></div> k to <div class="header blue ui" id="max-price" style="display:inline"></div> k
+        </h4>
+      </div>
+    </div>
 
+    <div class="row centered">
+      <div class="eight wide column center aligned">
+        <div class="ui buttons">
+          <button class="ui button">Reset</button>
+          <div class="or"></div>
+          <button class="ui positive button">Submit</button>
+        </div>
+      </div>
+    </div>
 
+  </div> <!-- grid end div -->
+  <script type="text/javascript">
+    $('.ui.dropdown')
+    .dropdown();
 
+    // Functions
+    
 
-<script type="text/javascript">
-  $('.ui.dropdown')
-  .dropdown();
-
-  var html5Slider = document.getElementById('price-slider');
-
-  noUiSlider.create(html5Slider, {
-    start: [ 10, 30 ],
-    connect: true,
-    range: {
-      'min': 10,
-      'max': 90
+    // Set up Town dropdown
+    var towns = document.getElementById('towns');
+    var townsList = ['Woodlands', 'Ang Mo Kio', 'Bukit Timah', 'Pasir Ris'];
+    for (var i = 0; i < townsList.length; i++) {
+      var option = document.createElement('option');
+      option.text = townsList[i];
+      option.value = townsList[i];
+      towns.appendChild(option);
     }
-  });
 
-  var minPrice = document.getElementById('min-price');
-  var maxPrice = document.getElementById('max-price');
-
-  html5Slider.noUiSlider.on('update', function(values, handle) {
-    var value = values[handle];
-
-    if (handle) {
-      maxPrice.innerHTML = Math.round(value);
-    } else {
-      minPrice.innerHTML = Math.round(value);
+    // Set up Amenities dropdown
+    var amenities = document.getElementById('amenities');
+    var amenitiesList = ['Childcare', 'Kindergarten', 'Clinic', 'Exercise', 'Family', 'Hawker Centres'];
+    for (var i = 0; i < amenitiesList.length; i++) {
+      var option = document.createElement('option');
+      option.text = amenitiesList[i];
+      option.value = amenitiesList[i];
+      amenities.appendChild(option);
     }
-  });
-
-  minPrice.addEventListener('change', function(){
-    html5Slider.noUiSlider.set([this.value, null]);
-  });
-
-  maxPrice.addEventListener('change', function(){
-    html5Slider.noUiSlider.set([null, this.value]);
-  });
 
 
+    // Set up price slider
+    var html5Slider = document.getElementById('price-slider');
 
+    noUiSlider.create(html5Slider, {
+      start: [ 10, 30 ],
+      connect: true,
+      range: {
+        'min': 10,
+        'max': 90
+      }
+    });
 
-</script>
+    var minPrice = document.getElementById('min-price');
+    var maxPrice = document.getElementById('max-price');
+
+    html5Slider.noUiSlider.on('update', function(values, handle) {
+      var value = values[handle];
+
+      if (handle) {
+        maxPrice.innerHTML = Math.round(value);
+      } else {
+        minPrice.innerHTML = Math.round(value);
+      }
+    });
+
+    minPrice.addEventListener('change', function(){
+      html5Slider.noUiSlider.set([this.value, null]);
+    });
+
+    maxPrice.addEventListener('change', function(){
+      html5Slider.noUiSlider.set([null, this.value]);
+    });
+  </script>
 </body>
 </html>
