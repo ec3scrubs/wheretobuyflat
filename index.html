@@ -101,7 +101,7 @@
       <div class="eight wide column center aligned">
         <div class="ui buttons huge">
           <button class="ui button" onclick="resetInputs()">Reset</button>
-          <button id="submitButton" class="ui positive button" onclick="testQuery()">Submit</button>
+          <button id="submitButton" class="ui positive button" onclick="submitQuery()">Submit</button>
         </div>
       </div>
     </div>
@@ -157,7 +157,7 @@
       location.reload();
     }
 
-    function testQuery() {
+    function submitQuery() {
       var payload = {
         "address": "730157",
         "features": "school"
@@ -199,7 +199,7 @@
 
     // Set up Amenities dropdown
     var amenities = document.getElementById('amenities');
-    var amenitiesList = ['Childcare', 'Kindergarten', 'Clinic', 'Exercise', 'Family', 'Hawker Centres'];
+    var amenitiesList = ['Child Care', 'Clinic', 'Community Club', 'Disabled-Friendly', 'Elder Care', 'Exercise Facilities', 'Family', 'Hawker Centre', 'Hospital', 'Kindergarten', 'Library', 'Nursing', 'Play', 'Relaxation', 'School'];
     for (var i = 0; i < amenitiesList.length; i++) {
       var option = document.createElement('option');
       option.text = amenitiesList[i];
