@@ -16,10 +16,48 @@
 
 </head>
 <body>
-  <div class="ui grid">
-    <div class="row">
+  <!-- Navbar -->
+  <div class="ui fixed menu">
+    <div class="ui container">
+      <div href="#" class="header item">
+        <img class="logo" src="assets/images/logo.png">
+      </div>
+      <a href="index.html" class="item">Home</a>
+      <a href="about.html" class="item">About</a>
+    </div>
+  </div>
+
+  <!-- Options div -->
+  <div class="ui grid" id="options">
+    <div class="row" style="margin-top:20px">
       <!-- <div class="eight wide column centered center aligned"><h1>Where To Buy Flats</h1></div>       -->
     </div>
+
+    <!-- Steps -->
+<!--     <div class="row centered">
+      <div class="wide column center aligned">
+        <div class="ui ordered steps">
+          <div class="completed step">
+            <div class="content">
+            <div class="title">Area</div>
+              <div class="description">Choose your desired area</div>
+            </div>
+          </div>
+          <div class="completed step">
+            <div class="content">
+              <div class="title">Amenities</div>
+              <div class="description">Tell us what you want <br>to have in your neighbourhood</div>
+            </div>
+          </div>
+          <div class="active step">
+            <div class="content">
+              <div class="title">Confirm Order</div>
+              <div class="description">Verify order details</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
 
     <div class="row centered">
       <div class="eight wide column">
@@ -61,21 +99,80 @@
 
     <div class="row centered">
       <div class="eight wide column center aligned">
-        <div class="ui buttons">
-          <button class="ui button">Reset</button>
-          <div class="or"></div>
-          <button class="ui positive button">Submit</button>
+        <div class="ui buttons huge">
+          <button class="ui button" onclick="resetInputs()">Reset</button>
+          <button id="submitButton" class="ui positive button" onclick="submitQuery()">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div> <!-- end of options div -->
+
+  <!-- Results div -->
+  <div class="ui grid" id="results">
+
+    <div class="row" style="margin-top:20px"></div>
+
+    <div class="row centered">
+      <div class="eight wide column">
+        <h4 class="ui horizontal divider header">
+          <i class="list layout icon"></i>
+          Results
+        </h4>
+        <div class="ui segment">
+          <p>This is a segment for the data fetched</p>
+        </div>
+        <div class="ui segment">
+          <p>This is a segment for the data fetched</p>
+        </div>
+        <div class="ui segment">
+          <p>This is a segment for the data fetched</p>
         </div>
       </div>
     </div>
 
-  </div> <!-- grid end div -->
+    <div class="row centered">
+      <div class="eight wide column center aligned">
+        <div class="ui buttons huge">
+          <button class="ui button" onclick="backButton()">Return</button>
+        </div>
+      </div>
+    </div>
+  </div> <!-- end of results div -->
+
   <script type="text/javascript">
+    // Init shenanigans
     $('.ui.dropdown')
     .dropdown();
 
+    $(function() {
+      $('#results').hide();  
+    })
+
     // Functions
-    
+    function resetInputs() {
+      location.reload();
+    }
+
+    function submitQuery() {
+      var jqxhr = $.getJSON( "example.json", function() {
+        console.log( "success" );
+      })
+      .done(function() {
+        $('#options').hide();
+        $('#results').show();
+      })
+      .fail(function() {
+        console.log( "error" );
+      })
+      .always(function() {
+        $('#submitButton').addClass('loading');
+      })      
+    }
+
+    function backButton() {
+      $('#results').hide();
+      $('#options').show();
+    }
 
     // Set up Town dropdown
     var towns = document.getElementById('towns');
@@ -115,7 +212,6 @@
 
     html5Slider.noUiSlider.on('update', function(values, handle) {
       var value = values[handle];
-
       if (handle) {
         maxPrice.innerHTML = Math.round(value);
       } else {
