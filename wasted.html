@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WHERE TO BUY FLAT</title>
+  
+  <!-- CSS Imports -->
+  <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.css">
+  <link rel="stylesheet" type="text/css" href="noUiSlider/nouislider.css">
+
+  <!-- JS Imports -->
+  <script src="jquery/dist/jquery.js"></script>
+  <script src="semantic/dist/semantic.js"></script>
+  <script src="noUiSlider/nouislider.min.js"></script>
+  <script src="handlebars-v3.0.3.js"></script>
+
+</head>
+<body>
+  <!-- Navbar -->
+  <div class="ui fixed menu">
+    <div class="ui container">
+      <div href="#" class="header item">
+        <img class="logo" src="assets/images/logo.png">
+      </div>
+      <a href="index.html" class="item">Home</a>
+      <a href="about.html" class="item">About</a>
+    </div>
+  </div>
+
+
+  <!-- Options div -->
+  <div class="ui grid" id="options">
+    <div class="row" style="margin-top:20px">
+      <!-- <div class="eight wide column centered center aligned"><h1>Where To Buy Flats</h1></div>       -->
+    </div> 
+
+    <div class="row centered">
+      <div class="eight wide column">
+        <h4 class="ui horizontal divider header">
+          <i class="marker icon"></i>
+          Area
+        </h4>
+        <div class="ui fluid icon input">
+          <input id="area-input" placeholder="Enter the name of the town, or a postal code" type="text" value="567987">
+          <i class="search icon"></i>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row centered">
+      <div class="eight wide column">
+        <h4 class="ui horizontal divider header">
+          <i class="building icon"></i>
+          Amenities
+        </h4>
+<!--         <select id="amenities" name="amenities" multiple="" class="ui fluid dropdown">
+          <option value="">Amenities</option>
+        </select> -->
+        <div class="ui multiple selection dropdown fluid">
+          <input name="gender" value="Child Care" type="hidden">
+          <i class="dropdown icon"></i>
+          <div class="default text">Amenities</div>
+          <div class="menu" id="amenities">
+            <div class="item" data-value="Child Care">Child Care</div>
+          </div>
+         </div>
+      </div>
+    </div>
+
+    <div class="row centered">
+      <div class="eight wide column center aligned">
+        <h4 class="ui horizontal divider header">
+          <i class="dollar icon"></i>
+          Pricing
+        </h4>
+
+        <div id="price-slider"></div>
+        <h4 class="grey ui header">
+          <div class="header red ui" id="min-price" style="display:inline"></div> k to <div class="header blue ui" id="max-price" style="display:inline"></div> k
+        </h4>
+      </div>
+    </div>
+
+    <div class="row centered">
+      <div class="eight wide column center aligned">
+        <div class="ui buttons huge">
+          <button class="ui button" onclick="resetInputs()">Reset</button>
+          <button id="submitButton" class="ui positive button" onclick="submitQuery()">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div> <!-- end of options div -->
+
+  <!-- Results div -->
+  <div class="ui grid" id="results">
+
+    <!-- This row is just for padding -->
+    <div class="row" style="margin-top:20px"></div>
+
+    <div class="row centered">
+      <div class="eight wide column">
+        <h4 class="ui horizontal divider header">
+          <i class="list layout icon"></i>
+          Results
+        </h4>
+      <div id="appendable"></div>
+      </div>
+    </div>
+
+    <div class="row centered">
+      <div class="eight wide column center aligned">
+        <div class="ui buttons huge">
+          <button class="ui button" onclick="backButton()">Return</button>
+        </div>
+      </div>
+    </div>
+  </div>   
+
+
+  </div> <!-- end of results div -->
+
+  <script id="template2" type="text/x-handlebars-template">                   
+    {{#output}}
+    <div class="ui segment">
+      <p class="ui red ribbon label">{{inc @index}}</p>
+      <h2>{{address}}</h2>
+      <div class="ui divider"></div>
+      <div class="ui statistics tiny">            
+        <div class="statistic">
+          <div class="value">
+            {{two-dp distance}}
+          </div>
+          <div class="label">
+            KM from Location
+          </div>
+        </div>
+        <div class="statistic">
+          <div class="value">
+            {{size}}
+          </div>
+          <div class="label">
+            Square Metres
+          </div>
+        </div>
+        <div class="statistic">
+          <div class="value">
+            {{divide-thousand price}}k
+          </div>
+          <div class="label">
+            SGD
+          </div>
+        </div>          
+      </div>
+      <div class="ui divider"><br></div>
+      {{#each ../features}}
+        <span class="ui tag label large">{{this}}</span>
+      {{/each}}
+
+        <table class="ui striped table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Distance away (km)</th>
+              </tr>
+            </thead>
+            <tbody>
+            {{#school}}
+              <tr>
+                <td>{{name}}</td>
+                <td>{{two-dp dist}}</td>
+              </tr>
+            {{/school}}
+            </tbody>
+          </table>
+    </div>
+    {{/output}}    
+  </script>
+
+  <script type="text/javascript">
+    // Init shenanigans
+    $('.ui.dropdown')
+    .dropdown()
+    ;
+
+    $(function() {
+      $('#results').hide();
+    })
+
+    // Functions
+    Handlebars.registerHelper("inc", function(value, options){
+      return parseInt(value) + 1;
+    });
+
+    Handlebars.registerHelper("two-dp", function(value, options){
+      return value.toFixed(2);
+    });
+
+    Handlebars.registerHelper("divide-thousand", function(value, options){
+      return parseInt(value) / 1000;
+    });
+
+    Handlebars.registerHelper("to-text", function(value, options){
+      return String(value);
+    }); 
+
+    function renderResults(json) {
+      for (var i = 0; i < json.n_items; i++) {
+        document.write("")
+      }
+
+    }
+
+    function resetInputs() {
+      location.reload();
+    }
+
+    function formPayload() {
+      var output = {features: 'school'};
+      var area = $('#area-input').val();
+      console.log(area);
+      output.address = area;
+      output.minprice = minPrice.innerHTML;
+      output.maxprice = maxPrice.innerHTML;
+      output.features = $('.ui.dropdown').dropdown('get value') || ['School'];
+      return output;
+    }
+
+    function submitQuery() {
+      $('#submitButton').addClass('loading');
+      var payload = formPayload();
+      $.ajax({
+        url: 'http://localhost:5000/api/query',
+        type: 'POST',
+        data: JSON.stringify(payload),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        async: true
+      })
+      .done(function(json) {
+        $('#options').hide();
+        $('#results').show();
+        console.log(json);
+
+        // Force handlebars to render
+        var feat_data = $('.ui.dropdown').dropdown('get value') || ['school'];
+        var source = document.getElementById('template2').innerHTML;
+        var template = Handlebars.compile(source);
+        var data = json;
+        var result = template({output: data, features: feat_data});
+        $('#appendable').append(result);
+        var results = $('#results');
+
+      })
+      .fail(function(err) {
+        console.log( "error: "+ err);
+      })
+      .always(function() {
+        $('#submitButton').addClass('loading');
+      });
+    }
+
+    function backButton() {
+      $('#results').hide();
+      $('#options').show();
+      $('#submitButton').removeClass('loading');
+    }
+
+    // Set up Amenities dropdown
+    var amenities = document.getElementById('amenities');
+    var amenitiesList = ['Clinic', 'Community Club', 'Disabled-Friendly', 'Elder Care', 'Exercise Facilities', 'Family', 'Hawker Centre', 'Hospital', 'Kindergarten', 'Library', 'Nursing', 'Play', 'Relaxation', 'School'];
+    for (var i = 0; i < amenitiesList.length; i++) {
+      var option = document.createElement('div');
+      option.setAttribute("class", "item");
+      option.setAttribute("data-value", amenitiesList[i]);
+      option.innerHTML = amenitiesList[i];
+      amenities.appendChild(option);
+    }
+
+    // Set up price slider
+    var html5Slider = document.getElementById('price-slider');
+
+    noUiSlider.create(html5Slider, {
+      start: [ 200, 400 ],
+      connect: true,
+      range: {
+        'min': 90,
+        'max': 1000
+      }
+    });
+
+    var minPrice = document.getElementById('min-price');
+    var maxPrice = document.getElementById('max-price');
+
+    html5Slider.noUiSlider.on('update', function(values, handle) {
+      var value = values[handle];
+      if (handle) {
+        maxPrice.innerHTML = Math.round(value);
+      } else {
+        minPrice.innerHTML = Math.round(value);
+      }
+    });
+
+    minPrice.addEventListener('change', function(){
+      html5Slider.noUiSlider.set([this.value, null]);
+    });
+
+    maxPrice.addEventListener('change', function(){
+      html5Slider.noUiSlider.set([null, this.value]);
+    });
+
+
+  </script>
+
+  <script type="text/javascript">
+
+
+  </script>
+
+
+</body>
+</html>
