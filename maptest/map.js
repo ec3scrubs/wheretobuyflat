@@ -91,6 +91,15 @@ for(var regionName in regions) {
         region[0].addEventListener("mousedown", function() {
             region.animate(hoverStyle, animationSpeed);
             document.getElementById("location").value = regionName;
+            $("#location").animate({
+              color: '#FF4136',
+              opacity: 0.6
+            }, 400, function() {
+              $('#location').animate({
+                color: '#111111',
+                opacity: 1.0
+              }, 400);
+            });
         }, true);
 
         region[0].addEventListener("mouseout", function() {
