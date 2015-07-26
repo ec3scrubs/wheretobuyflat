@@ -41,6 +41,21 @@
     <div class="row centered">
       <div class="eight wide column">
         <h4 class="ui horizontal divider header">
+          <i class="help icon"></i>
+          Where To Buy Flat
+        </h4>
+      </div>
+    </div>
+
+    <div class="row centered">
+      <div class="six wide column">
+        <img class="ui circular image" src="assets/images/cityscape-illustration.jpg">
+      </div>
+    </div>
+
+    <div class="row centered">
+      <div class="eight wide column">
+        <h4 class="ui horizontal divider header">
           <i class="marker icon"></i>
           Area
         </h4>
@@ -147,7 +162,6 @@
 
 
   </div> <!-- end of results div -->
-
   <script id="template2" type="text/x-handlebars-template">
     {{#each output}}
       <div class="ui segment">
@@ -156,7 +170,7 @@
          <div class="ui divider"></div>
          <div class="ui statistics tiny">
 
-          <div class="statistic">
+          <div class="blue statistic">
             <div class="value">
               {{two-dp this.distance}}
             </div>
@@ -165,7 +179,7 @@
             </div>
           </div>
 
-          <div class="statistic">
+          <div class="violet statistic">
             <div class="value">
               {{this.size}}
             </div>
@@ -174,7 +188,7 @@
             </div>
           </div>
 
-          <div class="statistic">
+          <div class="purple statistic">
             <div class="value">
               {{divide-thousand this.price}}k
             </div>
@@ -253,6 +267,7 @@
     }
 
     function resetInputs() {
+      $(document).scrollTop(0);
       location.reload();
     }
 
