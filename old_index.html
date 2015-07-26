@@ -1,4 +1,4 @@
-<!DOCTYPE html5>
+<!DOCTYPE html>
 <html>
 <head>
   <title>WHERE TO BUY FLAT</title>
@@ -11,7 +11,6 @@
   <script src="jquery/dist/jquery.js"></script>
   <script src="semantic/dist/semantic.js"></script>
   <script src="noUiSlider/nouislider.min.js"></script>
-  <script src="maptest/raphael-min.js"></script>
   <script src="handlebars-v3.0.3.js"></script>
 
 </head>
@@ -32,6 +31,16 @@
   <div class="ui grid" id="options">
     <div class="row" style="margin-top:20px">
       <!-- <div class="eight wide column centered center aligned"><h1>Where To Buy Flats</h1></div>       -->
+    </div>
+
+    <div class="row centered">
+      <div class="eight wide column">
+        <h4 class="ui horizontal divider header">
+          <i class="list layout icon"></i>
+          Results
+        </h4>
+      <div id="appendable"></div>
+      </div>
     </div> 
 
     <div class="row centered">
@@ -41,23 +50,9 @@
           Area
         </h4>
         <div class="ui fluid icon input">
-          <input id="area-input" placeholder="Enter the name of the town, or a postal code" type="text" value="596195">
+          <input id="area-input" placeholder="Enter the name of the town, or a postal code" type="text" value="567987">
           <i class="search icon"></i>
         </div>
-      </div>
-    </div>
-
-    <div class="row centered">
-      <div class="eight wide column" style="margin-bottom:0%;">
-        <h4 class="ui horizontal divider header">
-          <i class="marker icon"></i>
-          Map
-        </h4>
-        <div id="map" style="transform:scale(0.6); margin-top:-20%; margin-left:-25%;"></div>
-        <div class="ui fluid input" style="margin-top:-18%">
-          <input id="location" value="Region">
-        </div>
-        <script src="maptest/map.js"></script>
       </div>
     </div>
     
@@ -109,7 +104,89 @@
           <i class="list layout icon"></i>
           Results
         </h4>
-      <div id="appendable"></div>
+        <div class="ui segment">          
+          <p class="ui red ribbon label">Top Pick</p>          
+          <h2>ADDRESS</h2>
+          <div class="ui divider"></div>
+
+          <div class="ui statistics tiny">            
+            <div class="statistic">
+              <div class="value">
+                0.79
+              </div>
+              <div class="label">
+                KM from Location
+              </div>
+            </div>
+            <div class="statistic">
+              <div class="value">
+                69
+              </div>
+              <div class="label">
+                Square Metres
+              </div>
+            </div>
+            <div class="statistic">
+              <div class="value">
+                900k
+              </div>
+              <div class="label">
+                SGD
+              </div>
+            </div>          
+          </div>
+
+          <div class="ui divider"><br></div>
+          <span class="ui tag label large">School</span>
+          <table class="ui striped table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Distance away</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Fuchun Primary</td>
+                <td>0.23</td>
+              </tr>
+              <tr>
+                <td>Siling Primary</td>
+                <td>0.47</td>
+              </tr>
+              <tr>
+                <td>St Nicholas Girls' School</td>
+                <td>20.4</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <span class="ui tag label large">School</span>
+          <table class="ui striped table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Distance away</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Fuchun Primary</td>
+                <td>0.23</td>
+              </tr>
+              <tr>
+                <td>Siling Primary</td>
+                <td>0.47</td>
+              </tr>
+              <tr>
+                <td>St Nicholas Girls' School</td>
+                <td>20.4</td>
+              </tr>
+            </tbody>
+          </table>        
+
+        </div>
+        <input id="foobar" type="text" class="ui segment">
       </div>
     </div>
 
@@ -126,11 +203,7 @@
   </div> <!-- end of results div -->
 
   <script id="template2" type="text/x-handlebars-template">                   
-    {{#each output}}
-      Key: {{@key}}, Value: {{this}}
-      {{#each this}}
-        Key: {{@key}}, Value: {{this}}
-      {{/each}}
+    {{#output}}
     <div class="ui segment">
       <p class="ui red ribbon label">{{inc @index}}</p>
       <h2>{{address}}</h2>
@@ -164,6 +237,9 @@
       <div class="ui divider"><br></div>
       {{#each ../features}}
         <span class="ui tag label large">{{this}}</span>
+      {{/each}}
+
+      
         <table class="ui striped table">
             <thead>
               <tr>
@@ -172,32 +248,19 @@
               </tr>
             </thead>
             <tbody>
-            {{#../school}}
+            {{#school}}
               <tr>
                 <td>{{name}}</td>
                 <td>{{two-dp dist}}</td>
               </tr>
-            {{/../school}}
+            {{/school}}
             </tbody>
           </table>
-      {{/each}}
-
-        
     </div>
-    {{/each}}    
+    {{/output}}    
   </script>
 
-  <script type="text/javascript">
-    // Init shenanigans
-    $('.ui.dropdown')
-    .dropdown()
-    ;
-
-    $(function() {
-      $('#results').hide();
-    })
-
-    // Functions
+  <script>
     Handlebars.registerHelper("inc", function(value, options){
       return parseInt(value) + 1;
     });
@@ -212,7 +275,51 @@
 
     Handlebars.registerHelper("to-text", function(value, options){
       return String(value);
-    }); 
+    });
+
+    var feat_data = $('.ui.dropdown').dropdown('get value') || ['school'];
+
+
+    var source = document.getElementById('template2').innerHTML;
+    var template = Handlebars.compile(source);
+    var data = [{"address": "231 BT BATOK EAST AVE 5", "distance": 2.2170929462159825, "price": 340000, "school": [{"dist": 0.3716126271516735, "name": "Bukit View Primary School"}, {"dist": 0.43103333412574174, "name": "Bukit View Secondary School"}, {"dist": 0.43824109229087765, "name": "Keming Primary School"}, {"dist": 0.46818087387542423, "name": "Hillgrove Secondary School"}, {"dist": 0.5667441439131506, "name": "Lianhua Primary School"}], "score": 15.95446668358972, "size": 99, "value": 3434.343434343434}, {"address": "409 SAUJANA RD", "distance": 4.823406448834644, "price": 297000, "school": [{"dist": 0.3287492482575833, "name": "Greenridge Primary School"}, {"dist": 0.3594834586604394, "name": "Zhenghua Primary School"}, {"dist": 0.631831957758242, "name": "Greenridge Secondary School"}, {"dist": 0.6602222905207402, "name": "Beacon Primary School"}, {"dist": 0.6694136655431259, "name": "Zhenghua Secondary School"}], "score": 16.030953618645967, "size": 106, "value": 2801.8867924528304}, {"address": "208 PETIR RD", "distance": 3.839322245908119, "price": 320000, "school": [{"dist": 0.6371637474400008, "name": "Bukit Panjang Primary School"}, {"dist": 0.7388802080758482, "name": "Chestnut Drive Secondary School"}, {"dist": 0.912533133938577, "name": "Zhenghua Primary School"}, {"dist": 0.9405201951726768, "name": "Greenridge Secondary School"}, {"dist": 1.0796795015059062, "name": "Assumption Pathway School"}], "score": 16.147014553600428, "size": 104, "value": 3076.923076923077}, {"address": "253 BANGKIT RD", "distance": 4.4533667135200705, "price": 330000, "school": [{"dist": 0.34111370705009914, "name": "Greenridge Secondary School"}, {"dist": 0.5386180015266562, "name": "Beacon Primary School"}, {"dist": 0.6207349012680426, "name": "Zhenghua Primary School"}, {"dist": 0.9077699768308743, "name": "Bukit Panjang Primary School"}, {"dist": 1.0300899064822762, "name": "Greenridge Primary School"}], "score": 16.56345845663934, "size": 109, "value": 3027.5229357798166}, {"address": "104 TECK WHYE LANE", "distance": 4.65735163276676, "price": 320000, "school": [{"dist": 0.6365892383392548, "name": "South View Primary School"}, {"dist": 0.7244570426982239, "name": "Chua Chu Kang Secondary School"}, {"dist": 0.7545343409018312, "name": "Teck Whye Primary School"}, {"dist": 0.7708120116130924, "name": "Teck Whye Secondary School"}, {"dist": 0.8919715515514755, "name": "Pioneer Junior College"}], "score": 16.732823330879967, "size": 106, "value": 3018.867924528302}];
+
+    var extracted = []
+    for (var packet in data) {
+      // console.log(data[packet]);
+      for (var key in data[packet]) {
+        // console.log(key);
+        if (feat_data.indexOf(key) >= 0) {
+          console.log(key);
+          var _key = key;
+          var stuff = {_key: data[packet][key]}
+          extracted.push(stuff);
+        }
+      }
+    }
+    console.log(extracted);
+
+    var result = template({output: data, features: feat_data});
+    $('#appendable').append(result);
+
+  </script>
+
+  <script type="text/javascript">
+    // Init shenanigans
+    $('.ui.dropdown')
+    .dropdown()
+    ;
+
+
+
+    $(function() {
+      $('#results').hide();
+    })
+
+
+
+    // Functions
+    var results = $('#results');
 
     function renderResults(json) {
       for (var i = 0; i < json.n_items; i++) {
@@ -228,10 +335,7 @@
     function formPayload() {
       var output = {features: 'school'};
       var area = $('#area-input').val();
-      if($('#location').val() != "Region") {
-        console.log("Using region")
-        area = $('#location').val();
-      }
+      console.log(area);
       output.address = area;
       output.minprice = minPrice.innerHTML;
       output.maxprice = maxPrice.innerHTML;
@@ -255,30 +359,26 @@
         $('#results').show();
         console.log(json);
 
-        // Force handlebars to render
-        var feat_data = $('.ui.dropdown').dropdown('get value') || ['school'];
-        var source = document.getElementById('template2').innerHTML;
-        var template = Handlebars.compile(source);
-        var data = json;
-        var result = template({output: data, features: feat_data});
-        $('#appendable').append(result);
-        var results = $('#results');
-
+        // JSON is the return object
+        // The below function is just a proof of concept, remove later
+        var cow = json['0'].address;
+        console.log(cow);
+        $('#foobar').val(cow);
       })
       .fail(function(err) {
         console.log( "error: "+ err);
-        // resetInputs();
       })
       .always(function() {
         $('#submitButton').addClass('loading');
       });
     }
 
+
+
     function backButton() {
       $('#results').hide();
       $('#options').show();
       $('#submitButton').removeClass('loading');
-      $('#location').val("Region");
     }
 
     // Set up Amenities dropdown
