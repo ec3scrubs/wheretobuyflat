@@ -27,7 +27,6 @@
     </div>
   </div>
 
-
   <!-- Options div -->
   <div class="ui grid" id="options">
     <div class="row" style="margin-top:20px">
@@ -47,16 +46,21 @@
       </div>
     </div>
 
-    <div class="row centered">
+    <div class="row centered align">
       <div class="eight wide column" style="margin-bottom:0%;">
         <h4 class="ui horizontal divider header">
-          <i class="marker icon"></i>
+          <i class="map icon"></i>
           Map
         </h4>
-        <div id="map" style="transform:scale(0.6); margin-top:-20%; margin-left:-25%;"></div>
-        <div class="ui fluid input" style="margin-top:-18%">
-          <input id="location" value="Region">
+        <div class="ui fluid input">
+          <input id="location" value="Region" readonly="readonly">
         </div>
+      </div>
+    </div>
+
+    <div class="row centered align">
+      <div class="twelve wide column">
+        <div id="map" style="transform:scale(0.6); margin-top:-20%; margin-left:-25%;"></div>
         <script src="maptest/map.js"></script>
       </div>
     </div>
@@ -226,6 +230,10 @@
       location.reload();
     }
 
+    $( "#area-input" ).change(function() {
+      $('#location').val("Region");
+    });
+
     function formPayload() {
       var output = {features: 'school'};
       var area = $('#area-input').val();
@@ -265,6 +273,8 @@
         $('#appendable').append(result);
         var results = $('#results');
 
+        $(document).scrollTop(0);
+
       })
       .fail(function(err) {
         console.log( "error: "+ err);
@@ -281,6 +291,7 @@
       $('#options').show();
       $('#submitButton').removeClass('loading');
       $('#location').val("Region");
+      $(document).scrollTop(0);
     }
 
     // Set up Amenities dropdown

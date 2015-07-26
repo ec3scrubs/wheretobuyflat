@@ -6,7 +6,7 @@ var map = new Raphael(mapContainer, MAP_WIDTH, MAP_HEIGHT);
 // map.canvas.setAttribute('preserveAspectRatio', 'none');
 
 var style = {
-  fill: "#3bb9ff",
+  fill: "#7FDBFF",
   stroke: "#000000",
   "stroke-width": 1,
   "stroke-linejoin": "round",
@@ -80,7 +80,7 @@ regions["Western Catchment"] = map.path("M 334 188 333 188 333 187 333 187 332 1
 
 var animationSpeed = 500;
 var hoverStyle = {
-  fill: "#A8BED5"
+  fill: "#39CCCC"
 }
 
 for(var regionName in regions) {
@@ -95,6 +95,10 @@ for(var regionName in regions) {
 
         region[0].addEventListener("mouseout", function() {
           region.animate(style, animationSpeed);
+        }, true);
+
+        region[0].addEventListener("mouseover", function() {
+          region.animate(hoverStyle, 200);
         }, true);
 
     })(regions[regionName], regionName);
