@@ -125,46 +125,47 @@
 
   </div> <!-- end of results div -->
 
-  <script id="template2" type="text/x-handlebars-template">                   
+  <script id="template2" type="text/x-handlebars-template">
     {{#each output}}
-      Key: {{@key}}, Value: {{this}}
-      {{#each this}}
-        Key: {{@key}}, Value: {{this}}
-      {{/each}}
-    <div class="ui segment">
-      <p class="ui red ribbon label">{{inc @index}}</p>
-      <h2>{{address}}</h2>
-      <div class="ui divider"></div>
-      <div class="ui statistics tiny">            
-        <div class="statistic">
-          <div class="value">
-            {{two-dp distance}}
+      <div class="ui segment">
+        <p class="ui red ribbon label">{{inc @index}}</p>
+        <h2>{{this.address}}</h2>
+         <div class="ui divider"></div>
+         <div class="ui statistics tiny">
+
+          <div class="statistic">
+            <div class="value">
+              {{two-dp this.distance}}
+            </div>
+            <div class="label">
+              KM from Location
+            </div>
           </div>
-          <div class="label">
-            KM from Location
+
+          <div class="statistic">
+            <div class="value">
+              {{this.size}}
+            </div>
+            <div class="label">
+              Square Metres
+            </div>
           </div>
+
+          <div class="statistic">
+            <div class="value">
+              {{divide-thousand this.price}}k
+            </div>
+            <div class="label">
+              SGD
+            </div>
+          </div>          
+
         </div>
-        <div class="statistic">
-          <div class="value">
-            {{size}}
-          </div>
-          <div class="label">
-            Square Metres
-          </div>
-        </div>
-        <div class="statistic">
-          <div class="value">
-            {{divide-thousand price}}k
-          </div>
-          <div class="label">
-            SGD
-          </div>
-        </div>          
-      </div>
-      <div class="ui divider"><br></div>
-      {{#each ../features}}
-        <span class="ui tag label large">{{this}}</span>
-        <table class="ui striped table">
+        <div class="ui divider"><br></div>
+
+        {{#each this.features}}
+           <span class="ui tag label large">{{@key}}</span>
+           <table class="ui striped table">
             <thead>
               <tr>
                 <th>Name</th>
@@ -172,19 +173,19 @@
               </tr>
             </thead>
             <tbody>
-            {{#../school}}
+            {{#each this}}
               <tr>
-                <td>{{name}}</td>
-                <td>{{two-dp dist}}</td>
+                <td>{{this.name}}</td>
+                <td>{{two-dp this.dist}}</td>
               </tr>
-            {{/../school}}
+            {{/each}}
             </tbody>
           </table>
-      {{/each}}
+        {{/each}}
 
-        
-    </div>
-    {{/each}}    
+
+      </div>
+    {{/each}}
   </script>
 
   <script type="text/javascript">
@@ -235,7 +236,7 @@
       output.address = area;
       output.minprice = minPrice.innerHTML;
       output.maxprice = maxPrice.innerHTML;
-      output.features = $('.ui.dropdown').dropdown('get value') || ['School'];
+      output.features = $('.ui.dropdown').dropdown('get value') || ['School', 'Clinic'];
       return output;
     }
 
@@ -276,6 +277,7 @@
 
     function backButton() {
       $('#results').hide();
+      document.getElementById("appendable").innerHTML = "";
       $('#options').show();
       $('#submitButton').removeClass('loading');
       $('#location').val("Region");
