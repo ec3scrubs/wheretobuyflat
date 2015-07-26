@@ -52,9 +52,17 @@
           <i class="building icon"></i>
           Amenities
         </h4>
-        <select id="amenities" name="amenities" multiple="" class="ui fluid dropdown">
+<!--         <select id="amenities" name="amenities" multiple="" class="ui fluid dropdown">
           <option value="">Amenities</option>
-        </select>
+        </select> -->
+        <div class="ui multiple selection dropdown fluid">
+          <input name="gender" value="Child Care" type="hidden">
+          <i class="dropdown icon"></i>
+          <div class="default text">Amenities</div>
+          <div class="menu" id="amenities">
+            <div class="item" data-value="Child Care">Child Care</div>
+          </div>
+         </div>
       </div>
     </div>
 
@@ -111,13 +119,7 @@
   </div> <!-- end of results div -->
 
   <script id="template2" type="text/x-handlebars-template">                   
-    {{#each output}}
-      <h2> First iter </h2>
-      Key: {{@key}}, Value: {{this}}
-      {{#each this}}
-        <h2> Second iter </h2>
-        Key: {{@key}}, Value: {{this}}
-      {{/each}}
+    {{#output}}
     <div class="ui segment">
       <p class="ui red ribbon label">{{inc @index}}</p>
       <h2>{{address}}</h2>
@@ -151,6 +153,8 @@
       <div class="ui divider"><br></div>
       {{#each ../features}}
         <span class="ui tag label large">{{this}}</span>
+      {{/each}}
+
         <table class="ui striped table">
             <thead>
               <tr>
@@ -159,19 +163,16 @@
               </tr>
             </thead>
             <tbody>
-            {{#../school}}
+            {{#school}}
               <tr>
                 <td>{{name}}</td>
                 <td>{{two-dp dist}}</td>
               </tr>
-            {{/../school}}
+            {{/school}}
             </tbody>
           </table>
-      {{/each}}
-
-        
     </div>
-    {{/each}}    
+    {{/output}}    
   </script>
 
   <script type="text/javascript">
@@ -265,11 +266,12 @@
 
     // Set up Amenities dropdown
     var amenities = document.getElementById('amenities');
-    var amenitiesList = ['Child Care', 'Clinic', 'Community Club', 'Disabled-Friendly', 'Elder Care', 'Exercise Facilities', 'Family', 'Hawker Centre', 'Hospital', 'Kindergarten', 'Library', 'Nursing', 'Play', 'Relaxation', 'School'];
+    var amenitiesList = ['Clinic', 'Community Club', 'Disabled-Friendly', 'Elder Care', 'Exercise Facilities', 'Family', 'Hawker Centre', 'Hospital', 'Kindergarten', 'Library', 'Nursing', 'Play', 'Relaxation', 'School'];
     for (var i = 0; i < amenitiesList.length; i++) {
-      var option = document.createElement('option');
-      option.text = amenitiesList[i];
-      option.value = amenitiesList[i];
+      var option = document.createElement('div');
+      option.setAttribute("class", "item");
+      option.setAttribute("data-value", amenitiesList[i]);
+      option.innerHTML = amenitiesList[i];
       amenities.appendChild(option);
     }
 
