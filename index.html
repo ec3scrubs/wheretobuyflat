@@ -80,7 +80,7 @@
 
     <div class="row centered align">
       <div class="twelve wide column">
-        <div id="map" style="transform:scale(0.6); margin-top:-20%; margin-left:-25%;"></div>
+        <div id="map" style="transform:scale(0.6); margin-top:-15%; margin-left:-5%; margin-bottom:-10%;"></div>
         <script src="maptest/map.js"></script>
       </div>
     </div>
@@ -195,6 +195,42 @@
             <div class="label">
               SGD
             </div>
+          </div>
+
+          <div class="statistic">
+            <div class="value">
+              {{two-dp this.healthscore}}
+            </div>
+            <div class="label">
+              Health
+            </div>
+          </div>
+
+          <div class="statistic">
+            <div class="value">
+              {{two-dp this.elderscore}}
+            </div>
+            <div class="label">
+              Elderly
+            </div>
+          </div>
+
+          <div class="statistic">
+            <div class="value">
+              {{two-dp this.familyscore}}
+            </div>
+            <div class="label">
+              Family
+            </div>
+          </div>
+
+          <div class="statistic">
+            <div class="value">
+              {{two-dp this.score}}
+            </div>
+            <div class="label">
+              Combined
+            </div>
           </div>          
 
         </div>
@@ -285,7 +321,7 @@
       output.address = area;
       output.minprice = minPrice.innerHTML;
       output.maxprice = maxPrice.innerHTML;
-      output.features = $('.ui.dropdown').dropdown('get value') || ['School', 'Clinic'];
+      output.features = $('.ui.dropdown').dropdown('get value') || ['School', 'Hospital'];
       return output;
     }
 
